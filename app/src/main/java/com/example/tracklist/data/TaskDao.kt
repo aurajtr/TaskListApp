@@ -21,6 +21,9 @@ interface TaskDao {
             "id ASC")
     fun getTasksSortedByPriority(isAscending: Boolean): LiveData<List<Task>>
 
+    @Query("SELECT * FROM tasks WHERE title LIKE '%' || :searchQuery || '%' OR description LIKE '%' || :searchQuery || '%'")
+    fun searchTasks(searchQuery: String): LiveData<List<Task>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: Task)
 

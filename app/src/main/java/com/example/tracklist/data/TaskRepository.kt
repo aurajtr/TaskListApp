@@ -14,6 +14,10 @@ class TaskRepository(private val taskDao: TaskDao) {
         return taskDao.getTasksSortedByPriority(isAscending)
     }
 
+    fun searchTasks(query: String): LiveData<List<Task>> {
+        return taskDao.searchTasks(query)
+    }
+
     suspend fun insertTask(task: Task) {
         taskDao.insertTask(task)
     }

@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,13 +34,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         taskViewModel.userPreferences.observe(this) { preferences ->
-            // Update theme
             AppCompatDelegate.setDefaultNightMode(
                 if (preferences.isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES
                 else AppCompatDelegate.MODE_NIGHT_NO
             )
-
-            // Update sort order (you might want to refresh the task list here)
             taskViewModel.setSortOrder(preferences.sortOrderAscending)
         }
 
@@ -52,6 +50,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                taskViewModel.setSearchQuery(newText ?: "")
+                return true
+            }
+        })
+
         return true
     }
 
