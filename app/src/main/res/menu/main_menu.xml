@@ -30,4 +30,8 @@
                 android:title="Priority (High to Low)" />
         </menu>
     </item>
+    <item
+        android:id="@+id/menu_toggle_theme"
+        android:title="Toggle Theme"
+        app:showAsAction="never" />
 </menu>

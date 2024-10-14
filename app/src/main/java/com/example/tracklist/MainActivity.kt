@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,17 @@ class MainActivity : AppCompatActivity() {
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
         taskViewModel.tasks.observe(this) { tasks ->
             taskAdapter.submitList(tasks)
+        }
+
+        taskViewModel.userPreferences.observe(this) { preferences ->
+            // Update theme
+            AppCompatDelegate.setDefaultNightMode(
+                if (preferences.isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES
+                else AppCompatDelegate.MODE_NIGHT_NO
+            )
+
+            // Update sort order (you might want to refresh the task list here)
+            taskViewModel.setSortOrder(preferences.sortOrderAscending)
         }
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
@@ -63,6 +75,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_sort_priority_desc -> {
                 taskViewModel.setSortOrder(false)
+                true
+            }
+            R.id.menu_toggle_theme -> {
+                taskViewModel.setTheme(!AppCompatDelegate.getDefaultNightMode().equals(AppCompatDelegate.MODE_NIGHT_YES))
                 true
             }
             else -> super.onOptionsItemSelected(item)

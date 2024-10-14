@@ -1,36 +1,42 @@
 package com.example.tracklist.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.switchMap
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.tracklist.data.AppDatabase
 import com.example.tracklist.data.TaskRepository
 import com.example.tracklist.model.Task
+import com.example.tracklist.util.PreferencesManager
+import com.example.tracklist.util.UserPreferences
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: TaskRepository
+    private val preferencesManager: PreferencesManager
     private val filterStatus = MutableLiveData<Boolean?>(null)
-    private val sortOrder = MutableLiveData<Boolean>(false)
 
-    val tasks: LiveData<List<Task>> = filterStatus.switchMap { status ->
-        when (status) {
-            null -> repository.allTasks
-            else -> repository.getTasksByCompletionStatus(status)
-        }
-    }
-
-    val sortedTasks: LiveData<List<Task>> = sortOrder.switchMap { isAscending ->
-        repository.getTasksSortedByPriority(isAscending)
-    }
+    val tasks: LiveData<List<Task>>
+    val userPreferences: LiveData<UserPreferences>
 
     init {
         val taskDao = AppDatabase.getDatabase(application).taskDao()
         repository = TaskRepository(taskDao)
+        preferencesManager = PreferencesManager(application)
+
+        tasks = filterStatus.switchMap { status ->
+            when (status) {
+                null -> repository.allTasks
+                else -> repository.getTasksByCompletionStatus(status)
+            }
+        }
+
+        userPreferences = preferencesManager.preferenceFlow.asLiveData()
+
+        viewModelScope.launch {
+            val initialPreferences = preferencesManager.preferenceFlow.first()
+            setSortOrder(initialPreferences.sortOrderAscending)
+        }
     }
 
     fun insertTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
@@ -53,7 +59,11 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         filterStatus.value = status
     }
 
-    fun setSortOrder(isAscending: Boolean) {
-        sortOrder.value = isAscending
+    fun setSortOrder(isAscending: Boolean) = viewModelScope.launch {
+        preferencesManager.updateSortOrder(isAscending)
+    }
+
+    fun setTheme(isDarkTheme: Boolean) = viewModelScope.launch {
+        preferencesManager.updateTheme(isDarkTheme)
     }
 }
