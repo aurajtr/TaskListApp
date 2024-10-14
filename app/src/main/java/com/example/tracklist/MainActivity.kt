@@ -37,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onTaskClick(task: Task) {
-        // TODO: Implement task click functionality
+        val intent = Intent(this, EditTaskActivity::class.java)
+        intent.putExtra("TASK_ID", task.id)
+        startActivity(intent)
     }
 }
