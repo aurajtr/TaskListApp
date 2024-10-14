@@ -1,5 +1,6 @@
 package com.example.tracklist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -30,7 +31,8 @@ class MainActivity : AppCompatActivity() {
 
         val fab: FloatingActionButton = findViewById(R.id.fab)
         fab.setOnClickListener {
-            // TODO: Implement add task functionality
+            val intent = Intent(this, AddTaskActivity::class.java)
+            startActivity(intent)
         }
     }
 
