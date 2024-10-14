@@ -6,6 +6,14 @@ import com.example.tracklist.model.Task
 class TaskRepository(private val taskDao: TaskDao) {
     val allTasks: LiveData<List<Task>> = taskDao.getAllTasks()
 
+    fun getTasksByCompletionStatus(isCompleted: Boolean): LiveData<List<Task>> {
+        return taskDao.getTasksByCompletionStatus(isCompleted)
+    }
+
+    fun getTasksSortedByPriority(isAscending: Boolean): LiveData<List<Task>> {
+        return taskDao.getTasksSortedByPriority(isAscending)
+    }
+
     suspend fun insertTask(task: Task) {
         taskDao.insertTask(task)
     }

@@ -12,6 +12,15 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     fun getTaskById(id: Int): LiveData<Task>
 
+    @Query("SELECT * FROM tasks WHERE isCompleted = :isCompleted ORDER BY priority DESC, id ASC")
+    fun getTasksByCompletionStatus(isCompleted: Boolean): LiveData<List<Task>>
+
+    @Query("SELECT * FROM tasks ORDER BY " +
+            "CASE WHEN :isAscending = 1 THEN priority END ASC, " +
+            "CASE WHEN :isAscending = 0 THEN priority END DESC, " +
+            "id ASC")
+    fun getTasksSortedByPriority(isAscending: Boolean): LiveData<List<Task>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: Task)
 

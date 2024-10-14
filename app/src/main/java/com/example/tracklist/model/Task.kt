@@ -9,5 +9,5 @@ data class Task(
     var title: String,
     var description: String,
     var isCompleted: Boolean = false,
-    var priority: Int = 0
+    var priority: Int = 0 // 0: Low, 1: Medium, 2: High
 )

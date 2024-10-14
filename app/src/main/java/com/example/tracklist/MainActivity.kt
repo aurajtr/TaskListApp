@@ -2,6 +2,8 @@ package com.example.tracklist
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         taskViewModel = ViewModelProvider(this).get(TaskViewModel::class.java)
-        taskViewModel.allTasks.observe(this) { tasks ->
+        taskViewModel.tasks.observe(this) { tasks ->
             taskAdapter.submitList(tasks)
         }
 
@@ -33,6 +35,37 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val intent = Intent(this, AddTaskActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_filter_all -> {
+                taskViewModel.setFilterStatus(null)
+                true
+            }
+            R.id.menu_filter_active -> {
+                taskViewModel.setFilterStatus(false)
+                true
+            }
+            R.id.menu_filter_completed -> {
+                taskViewModel.setFilterStatus(true)
+                true
+            }
+            R.id.menu_sort_priority_asc -> {
+                taskViewModel.setSortOrder(true)
+                true
+            }
+            R.id.menu_sort_priority_desc -> {
+                taskViewModel.setSortOrder(false)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
