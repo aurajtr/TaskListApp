@@ -5,18 +5,18 @@ import androidx.room.*
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM task_table ORDER BY dueDate ASC")
+    @Query("SELECT * FROM tasks")
     fun getAllTasks(): LiveData<List<Task>>
 
+    @Query("SELECT * FROM tasks WHERE id = :taskId")
+    fun getTaskById(taskId: Int): LiveData<Task>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(task: Task)
+    suspend fun insertTask(task: Task)
 
     @Update
-    suspend fun update(task: Task)
+    suspend fun updateTask(task: Task)
 
-    @Delete
-    suspend fun delete(task: Task)
-
-    @Query("SELECT * FROM task_table ORDER BY priority DESC")
-    fun getTasksSortedByPriority(): LiveData<List<Task>>
+    @Query("DELETE FROM tasks WHERE id = :taskId")
+    suspend fun deleteTask(taskId: Int)
 }

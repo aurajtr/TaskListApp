@@ -8,7 +8,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
-
     private val repository: TaskRepository
     val allTasks: LiveData<List<Task>>
 
@@ -18,23 +17,19 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         allTasks = repository.allTasks
     }
 
-    fun insert(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(task)
+    fun getTaskById(taskId: Int): LiveData<Task> {
+        return repository.getTaskById(taskId)
     }
 
-    fun update(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(task)
+    fun insertTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insertTask(task)
     }
 
-    fun delete(task: Task) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(task)
+    fun updateTask(task: Task) = viewModelScope.launch(Dispatchers.IO) {
+        repository.updateTask(task)
     }
 
-    fun sortByDate() = viewModelScope.launch(Dispatchers.IO) {
-        repository.sortByDate()
-    }
-
-    fun sortByPriority() = viewModelScope.launch(Dispatchers.IO) {
-        repository.sortByPriority()
+    fun deleteTask(taskId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteTask(taskId)
     }
 }

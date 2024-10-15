@@ -5,16 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tracklist.databinding.FragmentTaskListBinding
 
 class TaskListFragment : Fragment() {
-
     private var _binding: FragmentTaskListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: TaskViewModel
-    private lateinit var adapter: TaskAdapter
+    private val viewModel: TaskViewModel by viewModels()
+    private lateinit var taskAdapter: TaskAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentTaskListBinding.inflate(inflater, container, false)
@@ -23,24 +23,29 @@ class TaskListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(TaskViewModel::class.java)
 
         setupRecyclerView()
         observeTasks()
+
+        binding.addTaskButton.setOnClickListener {
+            findNavController().navigate(R.id.action_taskListFragment_to_addTaskFragment)
+        }
     }
 
     private fun setupRecyclerView() {
-        adapter = TaskAdapter(
-            onItemClick = { task -> (activity as MainActivity).editTask(task) },
-            onItemLongClick = { task -> (activity as MainActivity).deleteTask(task) }
-        )
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+        taskAdapter = TaskAdapter { task ->
+            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task.id)
+            findNavController().navigate(action)
+        }
+        binding.taskRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = taskAdapter
+        }
     }
 
     private fun observeTasks() {
         viewModel.allTasks.observe(viewLifecycleOwner) { tasks ->
-            adapter.submitList(tasks)
+            taskAdapter.submitList(tasks)
         }
     }
 
