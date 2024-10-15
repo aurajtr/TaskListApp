@@ -1,13 +1,14 @@
-package com.example.tracklist.model
+package com.example.tracklist
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
-@Entity(tableName = "tasks")
+@Entity(tableName = "task_table")
 data class Task(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     var title: String,
     var description: String,
-    var isCompleted: Boolean = false,
-    var priority: Int = 0 // 0: Low, 1: Medium, 2: High
+    var priority: Int,
+    var dueDate: Date
 )

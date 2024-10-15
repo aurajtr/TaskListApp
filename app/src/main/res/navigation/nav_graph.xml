@@ -3,26 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/taskListFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.tracklist.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:id="@+id/taskListFragment"
+        android:name="com.example.tracklist.TaskListFragment"
+        android:label="@string/task_list_fragment_label"
+        tools:layout="@layout/fragment_task_list">
 
-        <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.tracklist.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
-    </fragment>
+
+    <dialog
+        android:id="@+id/addEditTaskDialog"
+        android:name="com.example.tracklist.AddEditTaskDialogFragment"
+        android:label="@string/add_edit_task_dialog_label"
+        tools:layout="@layout/dialog_add_edit_task">
+
+        <argument
+            android:name="taskId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </dialog>
 </navigation>

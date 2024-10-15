@@ -1,24 +1,26 @@
-package com.example.tracklist.data
+package com.example.tracklist
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.tracklist.model.Task
+import androidx.room.TypeConverters
 
 @Database(entities = [Task::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+@TypeConverters(DateConverter::class)
+abstract class TaskDatabase : RoomDatabase() {
+
     abstract fun taskDao(): TaskDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: TaskDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): TaskDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
+                    TaskDatabase::class.java,
                     "task_database"
                 ).build()
                 INSTANCE = instance
