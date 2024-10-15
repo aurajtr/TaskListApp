@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -51,6 +52,13 @@ dependencies {
     implementation(libs.androidx.datastore.core.android)
     implementation(libs.generativeai)
     implementation(libs.androidx.databinding.adapters)
+
+
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+
+    implementation(libs.kotlinx.coroutines.android)
 
     kapt(libs.androidx.room.compiler)
 
