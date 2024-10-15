@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
+    id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
 }
 
@@ -47,20 +47,14 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.datastore.core.android)
-    implementation(libs.generativeai)
-    implementation(libs.androidx.databinding.adapters)
-
+    implementation(libs.androidx.room.common)
+    kapt(libs.androidx.room.compiler)
 
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-
     implementation(libs.kotlinx.coroutines.android)
-
-    kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

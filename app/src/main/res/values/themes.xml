@@ -1,43 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme -->
-    <style name="Theme.TrackList" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryVariant">@color/primary_dark</item>
+    <!-- Base application theme. -->
+    <style name="Theme.TrackList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color -->
-        <item name="colorSecondary">@color/secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_dark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color -->
+        <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Default widget styles -->
-        <item name="materialButtonStyle">@style/Widget.TrackList.Button</item>
-        <item name="textInputStyle">@style/Widget.TrackList.TextInputLayout</item>
-        <item name="materialCardViewStyle">@style/Widget.TrackList.CardView</item>
-        <!-- Text appearance -->
-        <item name="textAppearanceHeadline1">@style/TextAppearance.TrackList.Headline1</item>
-        <item name="textAppearanceHeadline2">@style/TextAppearance.TrackList.Headline2</item>
-        <item name="textAppearanceHeadline3">@style/TextAppearance.TrackList.Headline3</item>
-        <item name="textAppearanceHeadline4">@style/TextAppearance.TrackList.Headline4</item>
-        <item name="textAppearanceHeadline5">@style/TextAppearance.TrackList.Headline5</item>
-        <item name="textAppearanceHeadline6">@style/TextAppearance.TrackList.Headline6</item>
-        <item name="textAppearanceSubtitle1">@style/TextAppearance.TrackList.Subtitle1</item>
-        <item name="textAppearanceSubtitle2">@style/TextAppearance.TrackList.Subtitle2</item>
-        <item name="textAppearanceBody1">@style/TextAppearance.TrackList.Body1</item>
-        <item name="textAppearanceBody2">@style/TextAppearance.TrackList.Body2</item>
+        <!-- Customize your theme here. -->
     </style>
-
-    <!-- Theme for activities using a Toolbar -->
-    <style name="Theme.TrackList.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <!-- App Bar Overlay -->
-    <style name="Theme.TrackList.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
-
-    <!-- Popup Menu Overlay -->
-    <style name="Theme.TrackList.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 </resources>
