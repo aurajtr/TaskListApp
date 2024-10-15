@@ -1,23 +1,40 @@
 package com.example.tracklist
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 
-class TaskRepository(private val taskDao: TaskDao) {
-    val allTasks: LiveData<List<Task>> = taskDao.getAllTasks()
+class TaskRepository {
+    private val firestore = FirebaseFirestore.getInstance()
+    private val tasksCollection = firestore.collection("tasks")
+    private val _allTasks = MutableLiveData<List<Task>>()
+    val allTasks: LiveData<List<Task>> = _allTasks
 
-    fun getTaskById(taskId: Int): LiveData<Task> {
-        return taskDao.getTaskById(taskId)
+    init {
+        fetchTasks()
+    }
+
+    private fun fetchTasks() {
+        tasksCollection.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                // Handle error
+                return@addSnapshotListener
+            }
+            val taskList = snapshot?.documents?.mapNotNull { it.toObject<Task>() } ?: emptyList()
+            _allTasks.value = taskList
+        }
     }
 
     suspend fun insertTask(task: Task) {
-        taskDao.insertTask(task)
+        tasksCollection.add(task)
     }
 
     suspend fun updateTask(task: Task) {
-        taskDao.updateTask(task)
+        task.id?.let { tasksCollection.document(it).set(task) }
     }
 
-    suspend fun deleteTask(taskId: Int) {
-        taskDao.deleteTask(taskId)
+    suspend fun deleteTask(taskId: String) {
+        tasksCollection.document(taskId).delete()
     }
 }

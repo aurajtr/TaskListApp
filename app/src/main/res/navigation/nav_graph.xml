@@ -35,6 +35,11 @@
         <action
             android:id="@+id/action_taskListFragment_to_editTaskFragment"
             app:destination="@id/editTaskFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -48,7 +53,7 @@
         android:label="EditTaskFragment">
         <argument
             android:name="taskId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
 </navigation>

@@ -9,7 +9,7 @@ interface TaskDao {
     fun getAllTasks(): LiveData<List<Task>>
 
     @Query("SELECT * FROM tasks WHERE id = :taskId")
-    fun getTaskById(taskId: Int): LiveData<Task>
+    fun getTaskById(taskId: String): LiveData<Task>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: Task)
@@ -18,5 +18,5 @@ interface TaskDao {
     suspend fun updateTask(task: Task)
 
     @Query("DELETE FROM tasks WHERE id = :taskId")
-    suspend fun deleteTask(taskId: Int)
+    suspend fun deleteTask(taskId: String)
 }
