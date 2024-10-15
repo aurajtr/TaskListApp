@@ -1,28 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/taskListFragment">
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.tracklist.LoginFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/action_loginFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_createAccountFragment"
+            app:destination="@id/createAccountFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createAccountFragment"
+        android:name="com.example.tracklist.CreateAccountFragment"
+        android:label="CreateAccountFragment">
+        <action
+            android:id="@+id/action_createAccountFragment_to_taskListFragment"
+            app:destination="@id/taskListFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.example.tracklist.TaskListFragment"
-        android:label="@string/task_list_fragment_label"
-        tools:layout="@layout/fragment_task_list">
-
+        android:label="TaskListFragment">
+        <action
+            android:id="@+id/action_taskListFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+        <action
+            android:id="@+id/action_taskListFragment_to_editTaskFragment"
+            app:destination="@id/editTaskFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="com.example.tracklist.AddTaskFragment"
+        android:label="AddTaskFragment" />
 
-    <dialog
-        android:id="@+id/addEditTaskDialog"
-        android:name="com.example.tracklist.AddEditTaskDialogFragment"
-        android:label="@string/add_edit_task_dialog_label"
-        tools:layout="@layout/dialog_add_edit_task">
-
+    <fragment
+        android:id="@+id/editTaskFragment"
+        android:name="com.example.tracklist.EditTaskFragment"
+        android:label="EditTaskFragment">
         <argument
             android:name="taskId"
-            app:argType="integer"
-            android:defaultValue="-1" />
-    </dialog>
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

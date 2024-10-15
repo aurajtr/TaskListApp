@@ -6,31 +6,34 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/etTaskTitle"
+        android:id="@+id/taskTitleInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Task Title"
-        android:minHeight="48dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
+        android:inputType="text"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
-        android:id="@+id/etTaskDescription"
+        android:id="@+id/taskDescriptionInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:hint="Task Description"
         android:inputType="textMultiLine"
-        android:lines="3"
-        android:minHeight="48dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp" />
+        android:lines="4"
+        android:layout_marginBottom="16dp"/>
 
     <Button
-        android:id="@+id/btnSaveTask"
+        android:id="@+id/saveChangesButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Save Task" />
+        android:text="Save Changes"
+        android:layout_marginBottom="8dp"/>
+
+    <Button
+        android:id="@+id/deleteTaskButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Task"
+        android:backgroundTint="#FF0000"/>
 
 </LinearLayout>
