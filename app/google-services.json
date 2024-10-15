@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "334044287645",
+    "project_id": "tracklist-8a089",
+    "storage_bucket": "tracklist-8a089.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:334044287645:android:5e3702f02e84c978697a74",
+        "android_client_info": {
+          "package_name": "com.example.tracklist"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDE1t_o0c0Ip0L5PMQsOD0b51wygOaj-c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

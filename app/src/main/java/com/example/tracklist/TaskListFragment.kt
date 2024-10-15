@@ -38,7 +38,7 @@ class TaskListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         taskAdapter = TaskAdapter { task ->
-            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task.id)
+            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task.id.toString())
             findNavController().navigate(action)
         }
         binding.taskRecyclerView.apply {
