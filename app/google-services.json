@@ -12,7 +12,12 @@
           "package_name": "com.example.tracklist"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "334044287645-mp6io4l3g7gk5lm2p5sdsv2intflehl4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBDE1t_o0c0Ip0L5PMQsOD0b51wygOaj-c"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "334044287645-mp6io4l3g7gk5lm2p5sdsv2intflehl4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

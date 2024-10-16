@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tracklist.databinding.FragmentCreateAccountBinding
 import com.google.firebase.auth.FirebaseAuth
 
+
 class CreateAccountFragment : Fragment() {
     private var _binding: FragmentCreateAccountBinding? = null
     private val binding get() = _binding!!
