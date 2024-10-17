@@ -1,70 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Text Appearances -->
+    <!-- Text Styles -->
     <style name="TextAppearance.TrackList.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
-        <item name="android:textSize">96sp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.TrackList.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
-        <item name="android:textSize">60sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Headline3" parent="TextAppearance.MaterialComponents.Headline3">
-        <item name="android:textSize">48sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Headline4" parent="TextAppearance.MaterialComponents.Headline4">
-        <item name="android:textSize">34sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
-        <item name="android:textSize">24sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
         <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TextAppearance.TrackList.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/on_surface</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="TextAppearance.TrackList.Body1" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/on_surface</item>
     </style>
 
     <style name="TextAppearance.TrackList.Body2" parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/on_surface</item>
     </style>
 
     <!-- Button Styles -->
     <style name="Widget.TrackList.Button" parent="Widget.MaterialComponents.Button">
-        <item name="android:textAppearance">@style/TextAppearance.TrackList.Button</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.TrackList.Body1</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 
-    <style name="TextAppearance.TrackList.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <!-- Input Styles -->
-    <style name="Widget.TrackList.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusTopStart">8dp</item>
+    <style name="Widget.TrackList.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textAppearance">@style/TextAppearance.TrackList.Body1</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 
     <!-- Card Styles -->
     <style name="Widget.TrackList.CardView" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">4dp</item>
         <item name="cardCornerRadius">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
+    <!-- Input Styles -->
+    <style name="Widget.TrackList.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+    </style>
+
+    <style name="Widget.TrackList.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:textAppearance">@style/TextAppearance.TrackList.Body1</item>
     </style>
 </resources>
