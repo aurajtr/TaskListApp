@@ -1,17 +1,19 @@
 package com.example.tracklist
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-class TaskViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: TaskRepository
-    val allTasks: LiveData<List<Task>>
+class TaskViewModel : ViewModel() {
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
+    private val _allTasks = MutableLiveData<List<Task>>()
     private val _filteredTasks = MutableLiveData<List<Task>>()
     val filteredTasks: LiveData<List<Task>> = _filteredTasks
 
@@ -19,33 +21,58 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private var currentSortOrder: SortOrder = SortOrder.DATE
 
     init {
-        if (FirebaseApp.getApps(application).isEmpty()) {
-            FirebaseApp.initializeApp(application)
+        fetchTasks()
+    }
+
+    private fun fetchTasks() {
+        viewModelScope.launch {
+            val userId = auth.currentUser?.uid ?: return@launch
+            val snapshot = firestore.collection("users").document(userId)
+                .collection("tasks")
+                .get()
+                .await()
+            val tasks = snapshot.toObjects(Task::class.java)
+            _allTasks.value = tasks
+            applyFilterAndSort()
         }
-        repository = TaskRepository()
-        allTasks = repository.allTasks
-        _filteredTasks.value = allTasks.value
     }
 
     fun insertTask(task: Task) = viewModelScope.launch {
-        repository.insertTask(task)
+        val userId = auth.currentUser?.uid ?: return@launch
+        firestore.collection("users").document(userId)
+            .collection("tasks")
+            .add(task)
+        fetchTasks()
     }
 
     fun updateTask(task: Task) = viewModelScope.launch {
-        repository.updateTask(task)
-        applyFilterAndSort()
+        val userId = auth.currentUser?.uid ?: return@launch
+        firestore.collection("users").document(userId)
+            .collection("tasks")
+            .document(task.id)
+            .set(task)
+        fetchTasks()
     }
 
     fun deleteTask(taskId: String) = viewModelScope.launch {
-        repository.deleteTask(taskId)
-        applyFilterAndSort()
+        val userId = auth.currentUser?.uid ?: return@launch
+        firestore.collection("users").document(userId)
+            .collection("tasks")
+            .document(taskId)
+            .delete()
+        fetchTasks()
     }
 
     fun getTaskById(taskId: String): LiveData<Task?> {
         val result = MutableLiveData<Task?>()
         viewModelScope.launch {
-            val task = allTasks.value?.find { it.id == taskId }
-            result.postValue(task)
+            val userId = auth.currentUser?.uid ?: return@launch
+            val document = firestore.collection("users").document(userId)
+                .collection("tasks")
+                .document(taskId)
+                .get()
+                .await()
+            result.value = document.toObject(Task::class.java)
         }
         return result
     }
@@ -62,7 +89,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun applyFilterAndSort() {
         viewModelScope.launch {
-            var filteredList = allTasks.value ?: emptyList()
+            var filteredList = _allTasks.value ?: emptyList()
 
             // Apply filter
             currentFilter?.let { filter ->

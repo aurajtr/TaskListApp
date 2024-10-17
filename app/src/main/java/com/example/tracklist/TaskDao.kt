@@ -19,4 +19,16 @@ interface TaskDao {
 
     @Query("DELETE FROM tasks WHERE id = :taskId")
     suspend fun deleteTask(taskId: String)
+
+    @Query("SELECT * FROM tasks WHERE category = :category")
+    fun getTasksByCategory(category: String): LiveData<List<Task>>
+
+    @Query("SELECT * FROM tasks ORDER BY dueDate ASC")
+    fun getTasksSortedByDate(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM tasks ORDER BY priority DESC")
+    fun getTasksSortedByPriority(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM tasks ORDER BY title ASC")
+    fun getTasksSortedAlphabetically(): LiveData<List<Task>>
 }

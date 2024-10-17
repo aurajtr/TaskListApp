@@ -20,9 +20,13 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Coroutine
         val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser ?: return Result.failure()
 
+        val now = Timestamp.now()
+        val twentyFourHoursLater = Timestamp(Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+
         val tasks = firestore.collection("users").document(currentUser.uid).collection("tasks")
-            .whereGreaterThan("dueDate", Timestamp.now())
-            .whereLessThan("dueDate", Timestamp(Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)))
+            .whereGreaterThan("dueDate", now)
+            .whereLessThan("dueDate", twentyFourHoursLater)
+            .whereEqualTo("isCompleted", false)
             .get()
             .await()
             .toObjects(Task::class.java)
@@ -49,8 +53,9 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Coroutine
         val notification = NotificationCompat.Builder(applicationContext, "task_notifications")
             .setContentTitle("Task Due Soon")
             .setContentText("${task.title} is due within 24 hours")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_notification)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
             .build()
 
         notificationManager.notify(task.id.hashCode(), notification)

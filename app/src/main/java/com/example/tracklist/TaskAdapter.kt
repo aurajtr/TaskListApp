@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.tracklist.databinding.ItemTaskBinding
 
-class TaskAdapter(private val onTaskClick: (Task) -> Unit) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
+class TaskAdapter(
+    private val onTaskClick: (Task) -> Unit,
+    private val onTaskCompleted: (Task) -> Unit
+) : ListAdapter<Task, TaskAdapter.TaskViewHolder>(TaskDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val binding = ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,8 +25,13 @@ class TaskAdapter(private val onTaskClick: (Task) -> Unit) : ListAdapter<Task, T
     inner class TaskViewHolder(private val binding: ItemTaskBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.taskTitle.text = task.title
+            binding.taskCategory.text = task.category
+            binding.taskDueDate.text = "Due: ${task.dueDate?.toDate()?.toString() ?: "Not set"}"
             binding.taskCompletedCheckbox.isChecked = task.isCompleted
+            binding.taskPriority.text = "Priority: ${task.priority}"
+
             binding.root.setOnClickListener { onTaskClick(task) }
+            binding.taskCompletedCheckbox.setOnClickListener { onTaskCompleted(task) }
         }
     }
 }

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tracklist.databinding.FragmentTaskListBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 class TaskListFragment : Fragment() {
@@ -37,10 +38,15 @@ class TaskListFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        taskAdapter = TaskAdapter { task ->
-            val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task.id.toString())
-            findNavController().navigate(action)
-        }
+        taskAdapter = TaskAdapter(
+            onTaskClick = { task ->
+                val action = TaskListFragmentDirections.actionTaskListFragmentToEditTaskFragment(task.id)
+                findNavController().navigate(action)
+            },
+            onTaskCompleted = { task ->
+                viewModel.updateTask(task.copy(isCompleted = !task.isCompleted))
+            }
+        )
         binding.taskRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = taskAdapter
@@ -50,6 +56,7 @@ class TaskListFragment : Fragment() {
     private fun observeTasks() {
         viewModel.filteredTasks.observe(viewLifecycleOwner) { tasks ->
             taskAdapter.submitList(tasks)
+            binding.emptyStateView.visibility = if (tasks.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 

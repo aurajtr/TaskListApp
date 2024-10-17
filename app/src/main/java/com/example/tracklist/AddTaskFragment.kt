@@ -1,17 +1,16 @@
 package com.example.tracklist
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.tracklist.databinding.FragmentAddTaskBinding
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
-import java.text.SimpleDateFormat
 import java.util.*
 
 class AddTaskFragment : Fragment() {
@@ -28,44 +27,42 @@ class AddTaskFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.dueDateButton.setOnClickListener {
-            showDatePicker()
-        }
-
         binding.addTaskButton.setOnClickListener {
             val title = binding.taskTitleInput.text.toString()
             val description = binding.taskDescriptionInput.text.toString()
             val category = binding.categoryInput.text.toString()
 
-            if (title.isNotBlank()) {
+            if (title.isNotEmpty() && description.isNotEmpty() && category.isNotEmpty() && dueDate != null) {
                 val task = Task(
                     title = title,
                     description = description,
                     category = category,
-                    dueDate = dueDate?.let { Timestamp(it) }
+                    dueDate = Timestamp(dueDate!!),
+                    priority = binding.prioritySlider.value.toInt()
                 )
                 viewModel.insertTask(task)
                 findNavController().navigateUp()
             } else {
-                Toast.makeText(context, "Please enter a title", Toast.LENGTH_SHORT).show()
+                Snackbar.make(view, "Please fill in all fields", Snackbar.LENGTH_SHORT).show()
             }
+        }
+
+        binding.dueDateButton.setOnClickListener {
+            showDatePicker()
         }
     }
 
     private fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, day ->
-                calendar.set(year, month, day)
-                dueDate = calendar.time
-                val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-                binding.dueDateButton.text = "Due: ${dateFormat.format(calendar.time)}"
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select due date")
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener { selection ->
+            dueDate = Date(selection)
+            binding.dueDateButton.text = "Due: ${dueDate?.toString() ?: "Not set"}"
+        }
+
+        datePicker.show(parentFragmentManager, "DATE_PICKER")
     }
 
     override fun onDestroyView() {

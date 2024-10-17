@@ -21,7 +21,9 @@ abstract class TaskDatabase : RoomDatabase() {
                     context.applicationContext,
                     TaskDatabase::class.java,
                     "task_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()  // This will delete the database if a migration isn't provided
+                    .build()
                 INSTANCE = instance
                 instance
             }
