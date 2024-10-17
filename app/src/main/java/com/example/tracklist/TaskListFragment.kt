@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.tracklist.databinding.FragmentTaskListBinding
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
 class TaskListFragment : Fragment() {
@@ -33,7 +32,6 @@ class TaskListFragment : Fragment() {
             findNavController().navigate(R.id.action_taskListFragment_to_addTaskFragment)
         }
 
-        binding.filterButton.setOnClickListener { showFilterMenu() }
         binding.sortButton.setOnClickListener { showSortMenu() }
     }
 
@@ -54,25 +52,10 @@ class TaskListFragment : Fragment() {
     }
 
     private fun observeTasks() {
-        viewModel.filteredTasks.observe(viewLifecycleOwner) { tasks ->
+        viewModel.sortedTasks.observe(viewLifecycleOwner) { tasks ->
             taskAdapter.submitList(tasks)
             binding.emptyStateView.visibility = if (tasks.isEmpty()) View.VISIBLE else View.GONE
         }
-    }
-
-    private fun showFilterMenu() {
-        val popup = PopupMenu(requireContext(), binding.filterButton)
-        popup.menuInflater.inflate(R.menu.menu_filter, popup.menu)
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.filter_all -> viewModel.filterTasks(null)
-                R.id.filter_work -> viewModel.filterTasks("Work")
-                R.id.filter_personal -> viewModel.filterTasks("Personal")
-                R.id.filter_shopping -> viewModel.filterTasks("Shopping")
-            }
-            true
-        }
-        popup.show()
     }
 
     private fun showSortMenu() {

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.tracklist.databinding.FragmentCreateAccountBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
 
 class CreateAccountFragment : Fragment() {
@@ -28,41 +29,66 @@ class CreateAccountFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         binding.createAccountButton.setOnClickListener {
-            val fullName = binding.fullNameInput.text.toString()
-            val email = binding.emailInput.text.toString()
+            val fullName = binding.fullNameInput.text.toString().trim()
+            val email = binding.emailInput.text.toString().trim()
             val password = binding.passwordInput.text.toString()
             val confirmPassword = binding.confirmPasswordInput.text.toString()
 
-            if (fullName.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && password == confirmPassword) {
-                auth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val user = auth.currentUser
-                            val userData = hashMapOf(
-                                "fullName" to fullName,
-                                "email" to email
-                            )
-                            user?.let {
-                                db.collection("users").document(it.uid).set(userData)
-                                    .addOnSuccessListener {
-                                        findNavController().navigate(R.id.action_createAccountFragment_to_taskListFragment)
-                                    }
-                                    .addOnFailureListener { e ->
-                                        Snackbar.make(view, "Error: ${e.message}", Snackbar.LENGTH_SHORT).show()
-                                    }
-                            }
-                        } else {
-                            Snackbar.make(view, "Account creation failed.", Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-            } else {
-                Snackbar.make(view, "Please fill in all fields and ensure passwords match", Snackbar.LENGTH_SHORT).show()
+            if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                showSnackbar("Please fill in all fields")
+                return@setOnClickListener
             }
+
+            if (password != confirmPassword) {
+                showSnackbar("Passwords do not match")
+                return@setOnClickListener
+            }
+
+            createAccount(fullName, email, password)
         }
 
         binding.backToLoginLink.setOnClickListener {
             findNavController().navigateUp()
         }
+    }
+
+    private fun createAccount(fullName: String, email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    val userData = hashMapOf(
+                        "fullName" to fullName,
+                        "email" to email
+                    )
+                    user?.let { firebaseUser ->
+                        db.collection("users").document(firebaseUser.uid).set(userData)
+                            .addOnSuccessListener {
+                                navigateToTaskList()
+                            }
+                            .addOnFailureListener { e ->
+                                showSnackbar("Error saving user data: ${e.message}")
+                            }
+                    }
+                } else {
+                    handleCreateAccountError(task.exception)
+                }
+            }
+    }
+
+    private fun handleCreateAccountError(exception: Exception?) {
+        when (exception) {
+            is FirebaseAuthUserCollisionException -> showSnackbar("Email already in use. Please use a different email or try logging in.")
+            else -> showSnackbar("Account creation failed: ${exception?.message}")
+        }
+    }
+
+    private fun navigateToTaskList() {
+        findNavController().navigate(R.id.action_createAccountFragment_to_taskListFragment)
+    }
+
+    private fun showSnackbar(message: String) {
+        view?.let { Snackbar.make(it, message, Snackbar.LENGTH_LONG).show() }
     }
 
     override fun onDestroyView() {
