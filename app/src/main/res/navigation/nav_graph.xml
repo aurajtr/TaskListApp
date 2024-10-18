@@ -32,6 +32,10 @@
         <action
             android:id="@+id/action_loginFragment_to_createAccountFragment"
             app:destination="@id/createAccountFragment" />
+        <argument
+            android:name="fromAccountCreation"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -39,10 +43,15 @@
         android:name="com.example.tracklist.CreateAccountFragment"
         android:label="CreateAccountFragment">
         <action
-            android:id="@+id/action_createAccountFragment_to_taskListFragment"
-            app:destination="@id/taskListFragment"
-            app:popUpTo="@id/nav_graph"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_createAccountFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/createAccountFragment"
+            app:popUpToInclusive="true">
+            <argument
+                android:name="fromAccountCreation"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
     </fragment>
 
     <fragment
