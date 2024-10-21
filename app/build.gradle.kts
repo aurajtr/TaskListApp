@@ -94,4 +94,5 @@ dependencies {
 
     // Other
     implementation(libs.play.services.safetynet)
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 }
