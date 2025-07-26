@@ -16,4 +16,7 @@ data class Task(
     val category: String = "",
     val dueDate: Timestamp? = null,
     val priority: Int = 0
-)
+) {
+    // Konstruktor tanpa parameter yang diperlukan Firestore
+    constructor() : this("", "", "", false, "", null, 0)
+}

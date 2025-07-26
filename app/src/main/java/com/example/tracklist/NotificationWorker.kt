@@ -13,7 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import java.util.*
 
-class NotificationWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
+class NotificationWorker(context: Context, params: WorkerParameters) :
+    CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
         val firestore = FirebaseFirestore.getInstance()

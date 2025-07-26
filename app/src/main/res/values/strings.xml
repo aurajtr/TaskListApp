@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TrackList</string>
+    <string name="app_name">TaskList</string>
     <string name="login">Login</string>
     <string name="create_account">Create Account</string>
     <string name="email">Email</string>
