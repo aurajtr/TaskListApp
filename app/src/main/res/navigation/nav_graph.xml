@@ -23,7 +23,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.tracklist.LoginFragment"
-        android:label="LoginFragment">
+        android:label="Login">
         <action
             android:id="@+id/action_loginFragment_to_taskListFragment"
             app:destination="@id/taskListFragment"
@@ -41,7 +41,7 @@
     <fragment
         android:id="@+id/createAccountFragment"
         android:name="com.example.tracklist.CreateAccountFragment"
-        android:label="CreateAccountFragment">
+        android:label="Create Account">
         <action
             android:id="@+id/action_createAccountFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/taskListFragment"
         android:name="com.example.tracklist.TaskListFragment"
-        android:label="TaskListFragment">
+        android:label="My Task">
         <action
             android:id="@+id/action_taskListFragment_to_addTaskFragment"
             app:destination="@id/addTaskFragment" />
@@ -74,7 +74,7 @@
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="com.example.tracklist.AddTaskFragment"
-        android:label="AddTaskFragment">
+        android:label="Add Task">
         <action
             android:id="@+id/action_addTaskFragment_to_taskListFragment"
             app:destination="@id/taskListFragment"
@@ -85,7 +85,7 @@
     <fragment
         android:id="@+id/editTaskFragment"
         android:name="com.example.tracklist.EditTaskFragment"
-        android:label="EditTaskFragment">
+        android:label="Edit Task">
         <argument
             android:name="taskId"
             app:argType="string" />
